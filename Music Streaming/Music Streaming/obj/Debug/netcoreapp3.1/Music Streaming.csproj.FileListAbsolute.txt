@@ -155,5 +155,6 @@ C:\Users\gabik\Desktop\Uni\Solo Project\Music Streaming\Music Streaming\bin\Debu
 C:\Users\gabik\Desktop\Uni\Solo Project\Music Streaming\Music Streaming\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\e_sqlite3.dll
 C:\Users\gabik\Desktop\Uni\Solo Project\Music Streaming\Music Streaming\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\e_sqlite3.dll
 C:\Users\gabik\Desktop\Uni\Solo Project\Music Streaming\Music Streaming\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\e_sqlite3.dll
+C:\Users\gabik\Desktop\Uni\Solo Project\Music Streaming\Music Streaming\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\gabik\Desktop\Uni\Solo Project\Music Streaming\Music Streaming\obj\Debug\netcoreapp3.1\Music Streaming.csproj.CoreCompileInputs.cache
 C:\Users\gabik\Desktop\Uni\Solo Project\Music Streaming\Music Streaming\obj\Debug\netcoreapp3.1\Music Streaming.MvcApplicationPartsAssemblyInfo.cache

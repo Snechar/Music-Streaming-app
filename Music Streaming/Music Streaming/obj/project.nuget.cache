@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "iMR/TEdTHfGlhh85mZRri8X38M3ZVvz3U5NOFuxixIBzF5v6C/y3XDzDSV2/LLlgWnakW50UPswHTZXFJjroDQ==",
+  "dgSpecHash": "7jIvgzIMUQn4Inlmq5tjbzLSom4hD82DtQWsBNZtVGRa1Sp9oM4wr4GNaSwY0GggkvK9M3X/LFv0LpCxHZL1NQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\gabik\\Desktop\\Uni\\Solo Project\\Music Streaming\\Music Streaming\\Music Streaming.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\gabik\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\gabik\\.nuget\\packages\\microsoft.aspnetcore.authentication.cookies\\2.2.0\\microsoft.aspnetcore.authentication.cookies.2.2.0.nupkg.sha512",
     "C:\\Users\\gabik\\.nuget\\packages\\microsoft.aspnetcore.authentication.core\\2.2.0\\microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",
+    "C:\\Users\\gabik\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\3.1.9\\microsoft.aspnetcore.authentication.jwtbearer.3.1.9.nupkg.sha512",
     "C:\\Users\\gabik\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\3.1.8\\microsoft.aspnetcore.cryptography.internal.3.1.8.nupkg.sha512",
     "C:\\Users\\gabik\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\3.1.8\\microsoft.aspnetcore.cryptography.keyderivation.3.1.8.nupkg.sha512",
     "C:\\Users\\gabik\\.nuget\\packages\\microsoft.aspnetcore.dataprotection\\2.2.0\\microsoft.aspnetcore.dataprotection.2.2.0.nupkg.sha512",

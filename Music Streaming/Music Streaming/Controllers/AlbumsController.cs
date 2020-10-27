@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ namespace Music_Streaming.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AlbumsController : ControllerBase
     {
         private readonly MusicContext _context;
@@ -23,6 +25,7 @@ namespace Music_Streaming.Controllers
 
         // GET: api/Albums
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<AdapterAlbum>>> GetAlbums()
         {
             var albums = await _context.Albums.Include(p => p.Songs).ToListAsync();
@@ -97,6 +100,7 @@ namespace Music_Streaming.Controllers
 
         // DELETE: api/Albums/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Album>> DeleteAlbum(long id)
         {
             var album = await _context.Albums.FindAsync(id);

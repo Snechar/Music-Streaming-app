@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ namespace Music_Streaming.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SongsController : ControllerBase
     {
         private readonly MusicContext _context;
@@ -23,6 +25,7 @@ namespace Music_Streaming.Controllers
 
         // GET: api/Songs
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<AdapterSong>>> GetMusicItems()
         {
             var songs = await _context.Songs.Include(p => p.Album).ToListAsync();
@@ -30,13 +33,15 @@ namespace Music_Streaming.Controllers
             foreach (var item in songs)
             {
                 adapterSongs.Add(new AdapterSong(item));
+                
             }
             return adapterSongs;
             
         }
 
-        // GET: api/Songs/5
+        // GET: api/Songs/5 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Song>> GetSong(long id)
         {
             var song = await _context.Songs.FindAsync(id);
@@ -53,6 +58,7 @@ namespace Music_Streaming.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutSong(long id, Song song)
         {
             if (id != song.Id)
@@ -85,6 +91,7 @@ namespace Music_Streaming.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Song>> PostSong(Song song)
         {
             _context.Songs.Add(song);
@@ -95,6 +102,7 @@ namespace Music_Streaming.Controllers
 
         // DELETE: api/Songs/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Song>> DeleteSong(long id)
         {
             var song = await _context.Songs.FindAsync(id);
