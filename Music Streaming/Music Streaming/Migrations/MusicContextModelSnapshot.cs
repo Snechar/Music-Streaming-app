@@ -222,12 +222,32 @@ namespace Music_Streaming.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<long>("ArtistId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ArtistId");
+
                     b.ToTable("Albums");
+                });
+
+            modelBuilder.Entity("Music_Streaming.Models.Artist", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Artists");
                 });
 
             modelBuilder.Entity("Music_Streaming.Models.Song", b =>
@@ -237,7 +257,10 @@ namespace Music_Streaming.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("AlbumID")
+                    b.Property<long>("AlbumId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ArtistId")
                         .HasColumnType("bigint");
 
                     b.Property<double>("Length")
@@ -248,7 +271,9 @@ namespace Music_Streaming.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AlbumID");
+                    b.HasIndex("AlbumId");
+
+                    b.HasIndex("ArtistId");
 
                     b.ToTable("Songs");
                 });
@@ -304,11 +329,26 @@ namespace Music_Streaming.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Music_Streaming.Models.Album", b =>
+                {
+                    b.HasOne("Music_Streaming.Models.Artist", "Artist")
+                        .WithMany("Albums")
+                        .HasForeignKey("ArtistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Music_Streaming.Models.Song", b =>
                 {
                     b.HasOne("Music_Streaming.Models.Album", "Album")
                         .WithMany("Songs")
-                        .HasForeignKey("AlbumID")
+                        .HasForeignKey("AlbumId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Music_Streaming.Models.Artist", "Artist")
+                        .WithMany("Songs")
+                        .HasForeignKey("ArtistId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

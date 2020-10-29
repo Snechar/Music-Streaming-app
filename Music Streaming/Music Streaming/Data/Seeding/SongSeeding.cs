@@ -19,21 +19,28 @@ namespace Music_Streaming.Data.Seeding
         {
             if(!musicContext.Songs.Any())
             {
+                Artist artist = new Artist
+                {
+                    Name = "Plini",
+                };
                 
                 Album album1 = new Album
                 {
                     
                     Name = "Other Things",
                     Songs = new List<Song>(),
+                    ArtistId = 1,
                 };
                 Song song1 = new Song
                 {
-                    
+
                     Name = "Selenium Forest",
                     Length = 6.05,
-                    AlbumID = 1,
+                    AlbumId = 1,
+                    ArtistId = 1,
 
                 };
+                musicContext.Artists.Add(artist);
                 musicContext.SaveChanges();
                 musicContext.Albums.Add(album1);
                 musicContext.SaveChanges();

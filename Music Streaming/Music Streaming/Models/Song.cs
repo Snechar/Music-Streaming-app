@@ -13,6 +13,9 @@ namespace Music_Streaming.Models
         public string Name { get; set; }
         public double Length { get; set; }
         public Album Album { get; set; }
-        public long AlbumID { get; set; }
+        public long AlbumId { get; set; }
+        public Artist Artist { get; set; }
+        public long ArtistId { get; set; }
+
     }
 }

@@ -19,6 +19,7 @@ namespace Music_Streaming.Context
         
         public DbSet<Song> Songs { get; set; }
         public DbSet<Album> Albums { get; set; }
+        public DbSet<Artist> Artists { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

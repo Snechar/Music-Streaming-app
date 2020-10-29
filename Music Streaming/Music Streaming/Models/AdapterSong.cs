@@ -12,7 +12,7 @@ namespace Music_Streaming.Models
             this.Id = song.Id;
             this.Name = song.Name;
             this.Length = song.Length;
-            this.AlbumID = song.AlbumID;
+            this.AlbumID = song.AlbumId;
             this.AlbumName = song.Album.Name;
         }
         public long Id { get; set; }
