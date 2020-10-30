@@ -1,9 +1,4 @@
-*{
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Montserrat', sans-serif;
-}
+
 h1.title {
   font-size: 50px;
   font-family: "Passion One", cursive;
@@ -20,6 +15,18 @@ hr {
   margin-bottom: 15px;
 
 }
+.Context{
+  width: calc(100%-200px);
+  padding: 20px;
+  background: #121212;
+
+  text-transform: capitalize;
+
+}
+.playlist.title{
+    font-size: 20px;
+}
+
 
 label {
   margin-bottom: 15px;

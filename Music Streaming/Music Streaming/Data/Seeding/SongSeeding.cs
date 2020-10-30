@@ -37,7 +37,6 @@ namespace Music_Streaming.Data.Seeding
                     Name = "Selenium Forest",
                     Length = 6.05,
                     AlbumId = 1,
-                    ArtistId = 1,
 
                 };
                 musicContext.Artists.Add(artist);

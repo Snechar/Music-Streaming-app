@@ -5,8 +5,15 @@ import AccountService from '../services/AccountService.js';
 import Cookie from "js-cookie"
 import { useHistory } from "react-router-dom";
 
+
 const Login = () => {
+	
 	const history = useHistory();
+	if(Cookie.get('logedIn') == "true")
+	{
+		history.push("/home");
+
+	}
 	const [login, setLogin] = useState({ username: "", password: "" });
 	const [message, setMessage] = useState("");
   
@@ -19,9 +26,12 @@ const Login = () => {
   
 	  AccountService.Login(login).then((res) => {
 		Cookie.set("token", res.data.token);
+		Cookie.set('logedIn' , "true")
+	
 		console.log(Cookie.get("token"))		
 		setMessage("Logged in");
-        history.push("/");
+		history.push("/");
+
 	  })
 	  .catch((error) => {
 		  console.log(error);

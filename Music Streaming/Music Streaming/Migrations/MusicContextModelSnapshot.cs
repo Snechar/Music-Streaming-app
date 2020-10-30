@@ -15,7 +15,7 @@ namespace Music_Streaming.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.8")
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -260,9 +260,6 @@ namespace Music_Streaming.Migrations
                     b.Property<long>("AlbumId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("ArtistId")
-                        .HasColumnType("bigint");
-
                     b.Property<double>("Length")
                         .HasColumnType("float");
 
@@ -272,8 +269,6 @@ namespace Music_Streaming.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AlbumId");
-
-                    b.HasIndex("ArtistId");
 
                     b.ToTable("Songs");
                 });
@@ -343,12 +338,6 @@ namespace Music_Streaming.Migrations
                     b.HasOne("Music_Streaming.Models.Album", "Album")
                         .WithMany("Songs")
                         .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Music_Streaming.Models.Artist", "Artist")
-                        .WithMany("Songs")
-                        .HasForeignKey("ArtistId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
