@@ -20,6 +20,6 @@ jobs:
     - name: Install dependencies
       run: dotnet restore [./Music Streaming/]
     - name: Build
-      run: dotnet build --configuration Release --no-restore [./Music Streaming/]
+      run: dotnet build --configuration Release --no-restore [.\Music Streaming\MusicStreamingAPITest]
     - name: Test
-      run: dotnet test --no-restore --verbosity normal [./Music Streaming/]
+      run: dotnet test --no-restore --verbosity normal [.\Music Streaming\MusicStreamingAPITest]
