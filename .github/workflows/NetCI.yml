@@ -18,8 +18,8 @@ jobs:
       with:
         dotnet-version: 3.1.301
     - name: Install dependencies
-      run: dotnet restore [.\Music_Streaming\]
+      run: dotnet restore .\Music_Streaming\
     - name: Build
-      run: dotnet build --configuration Release --no-restore [.\Music_Streaming\]
+      run: dotnet build --configuration Release --no-restore .\Music_Streaming\
     - name: Test
-      run: dotnet test --no-restore --verbosity normal [.\Music_Streaming\]
+      run: dotnet test --no-restore --verbosity normal .\Music_Streaming\
