@@ -32,9 +32,9 @@ jobs:
         uses: NuGet/setup-nuget@v1.0.5
         
       - name: Setup NuGet package
-        run: nuget restore Music Streaming.sln
+        run: nuget restore [Music Streaming.sln]
       - name: Build The Solution
-        run: msbuild Music Streaming.sln
+        run: msbuild [Music Streaming.sln]
       - name: Test
         run: dotnet test --no-restore --verbosity normal
         
