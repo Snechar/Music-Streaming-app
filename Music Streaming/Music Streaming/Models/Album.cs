@@ -11,6 +11,7 @@ namespace Music_Streaming.Models
     {
         
         public long Id { get; set; }
+        public DateTime DateTimeCreated { get; set; }
         public string Name { get; set; }
         
         public ICollection<Song> Songs { get; set; }

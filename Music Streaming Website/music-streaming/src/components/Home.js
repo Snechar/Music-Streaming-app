@@ -1,76 +1,76 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Component,useRef } from "react";
 import Card from "react-bootstrap/Card";
+import 'react-h5-audio-player/lib/styles.css';
+import {Container, Row, Col} from 'react-bootstrap'
+import AudioPlayer from 'react-h5-audio-player';
 import './Home.css'
+import {
+    BrowserRouter as Router,
+    Route,
+    Redirect
+  } from "react-router-dom";
+  import Cookie from "js-cookie"
+import { useHistory } from "react-router-dom";
+import Song from "./MusicComponents/Songs"
 
 
 
-const Home =()=>{
-    var playing;
-    var audio;
-    const handleClick = (event) => {
-        var audio = new Audio('Music/Plini/Other Things/1.mp3',"playing");
-        if(playing ==="1")
-        {
-            playing="0";
-            console.log(playing)
-            audio.pause();
-            audio.currentTime = 0;
-            
-
-        }
-        if(playing==="0"|| playing==null)
-        {
-            playing = "1"
-            console.log(playing)
-            audio.play();
 
 
-        }
-        
-    }
-    function Play() {
-        console.log(playing)
-        if(playing === "0" || playing=== undefined)
-        {
-             audio = new Audio('Music/Plini/Other Things/1.mp3',"playing");
-            audio.play();
-            playing = "1"
-        }
-        else if (playing==="1")
-        {
-            Stop(audio);
-        }
 
-      }
-      function Stop(audio) {
-        audio.pause();
-        audio.currentTime = 0;
-        playing = "0"
-      }
-    return(
-      <div className = "Context" >
-<div className="playlist-title">
-<table>
-<tbody>
-    <tr>
-        <td>Title</td>
-        <td>Artist</td>
-        <td>Length</td>
-        </tr>
-        </tbody>
+
+
+const Home=()=>{
+
+  const [songUrl, setsongUrl] = useState("No song playing");
+  const songRef = useRef();
+  console.log(songUrl)
+ 
+  const history = useHistory();
+  useEffect(() => {
+    songRef.current = songUrl; // Write it to the ref
+    console.log(songRef)
+  });
   
 
-    <tbody>
-        <tr>
-           <td onClick={Play}>Selenium Forest</td>
-            <td>Plini</td>
-            <td>3:14</td>
-        </tr>
-    </tbody>
-</table>
+  if(Cookie.get('logedIn') == "false"||Cookie.get('logedIn') == null )
+  {
+     return null
+
+  }
+  if(window.location.pathname == "/login" || window.location.pathname == "/register")
+  {
+    return null;
+  }
+
+    return( 
+
+      <div >
+      <Route path = "/home">
+<Song setsongUrl={setsongUrl}/>
+</Route>
+<div className ="player">
+<Container>
+
+  <AudioPlayer
+  layout="horizontal-reverse"
+  customAdditionalControls={[]}
+ src={songRef}
+ onPlay={e => console.log("onPlay")}
+    // other props here
+  />
+
+  </Container>
+
+
 </div>
+
 </div>
+
 
     )
 }
-export default Home
+
+
+
+export default Home;

@@ -1,4 +1,5 @@
-import React, { Component , NavLink , Fragment} from 'react';
+import React, { Component  , Fragment} from 'react';
+import { NavLink, Link} from 'react-router-dom';
 import {MenuItems} from "./MenuItems";
 import './Navbar.css';
 
@@ -34,15 +35,19 @@ componentDidMount() {
     render()  {
         return(
             <nav className="NavbarItems">
-               <a href="/home" className="logo-link"><h1 className="navbar-logo">Voughtify<i className="fab fa-spotify"></i></h1></a> 
+           
+            <Link exact className="logo-link" to={'/home'}> <h1 className="navbar-logo">Voughtify<i className="fab fa-spotify"></i></h1></Link>
+              
                 <div className="menu-icon" onClick={this.handleClick}>
                     <i className={this.state.clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
                 </div>
                 {this.state.loggedIn ?
                     <ul className = {this.state.clicked ? 'nav-menu active' : 'nav-menu'}>
                  <li>
-                    <a className="nav-links" href="/home">Songs</a>
-                    <a className="nav-links" href="/account">My account</a>
+              
+                    <NavLink exact className="nav-links" to={'/home'}>Songs</NavLink>
+                    <NavLink exact className="nav-links" to={'/account'}>My Account</NavLink>
+                 
                     
                     </li>
                     </ul>

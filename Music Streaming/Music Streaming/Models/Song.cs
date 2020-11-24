@@ -14,6 +14,7 @@ namespace Music_Streaming.Models
         public double Length { get; set; }
         public Album Album { get; set; }
         public long AlbumId { get; set; }
+        public DateTime DateTimeCreated { get; set; }
 
     }
 }

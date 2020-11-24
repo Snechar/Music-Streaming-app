@@ -3,20 +3,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faHome, faLock, faSearch, faTimes, faUser, faUserCircle, faUsers } from '@fortawesome/free-solid-svg-icons';
 import AccountService from '../services/AccountService.js';
 import Cookie from "js-cookie"
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
+
 
 
 const Login = () => {
 	
 	const history = useHistory();
-	if(Cookie.get('logedIn') == "true")
-	{
-		history.push("/home");
 
-	}
 	const [login, setLogin] = useState({ username: "", password: "" });
 	const [message, setMessage] = useState("");
-  
+	if(Cookie.get('logedIn') == "true")
+	{
+		return (      <Redirect push to="/home"/>  )
+
+	}
 	const handleChange = (event) => {
 	  setLogin({ ...login, [event.target.name]: event.target.value });
 	};
@@ -38,6 +39,8 @@ const Login = () => {
 		  setMessage("Yes, it did fail");
 	  });
 	};
+	console.log(Cookie.get('logedIn'))
+
   return (
       <div className="login-body">
 				<div className="main-login main-center">

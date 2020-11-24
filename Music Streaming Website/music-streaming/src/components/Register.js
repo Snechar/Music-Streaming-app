@@ -17,7 +17,7 @@ const Register = () => {
 	  AccountService.Register(register).then((res) => {
 		console.log(res);
 		console.log(res.data);
-		setMessage("Er is een account aangemaakt!");
+		setMessage("Username Already Exists!");
 	  })
 	  .catch((error) => {
 		  console.log(error);

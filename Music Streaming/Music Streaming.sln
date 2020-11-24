@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Music Streaming", "Music Streaming\Music Streaming.csproj", "{EFA37B5D-8EFD-455C-95EE-E4F565CBBF9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Music Streaming", "Music Streaming\Music Streaming.csproj", "{EFA37B5D-8EFD-455C-95EE-E4F565CBBF9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicStreamingAPITest", "MusicStreamingAPITest\MusicStreamingAPITest.csproj", "{49B215ED-DF08-4EF3-AD3B-B2B28A0BB935}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{EFA37B5D-8EFD-455C-95EE-E4F565CBBF9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFA37B5D-8EFD-455C-95EE-E4F565CBBF9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFA37B5D-8EFD-455C-95EE-E4F565CBBF9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49B215ED-DF08-4EF3-AD3B-B2B28A0BB935}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49B215ED-DF08-4EF3-AD3B-B2B28A0BB935}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49B215ED-DF08-4EF3-AD3B-B2B28A0BB935}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49B215ED-DF08-4EF3-AD3B-B2B28A0BB935}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

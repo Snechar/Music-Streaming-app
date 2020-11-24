@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Music_Streaming.Context;
 using Music_Streaming.Models;
+using Music_Streaming.ViewModels;
+using Music_Streaming.Mappers;
 
 namespace Music_Streaming.Controllers
 {
@@ -26,32 +28,41 @@ namespace Music_Streaming.Controllers
         // GET: api/Albums
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<AdapterAlbum>>> GetAlbums()
+        public async Task<ActionResult<IEnumerable<AlbumViewModel>>> GetAlbums([FromQuery] int pageSize = 30, [FromQuery] int pageIndex = 0)
         {
-            var albums = await _context.Albums.Include(p => p.Songs).ToListAsync();
-            List<AdapterAlbum> adapterAlbums = new List<AdapterAlbum>();
+            var albums = await _context.Albums.Skip(pageSize * pageIndex).Take(pageSize).ToListAsync();
+            List<AlbumViewModel> AlbumsViewModels = new List<AlbumViewModel>();
 
             foreach (var item in albums)
             {
-                adapterAlbums.Add(new AdapterAlbum(item));
+                var artist = await _context.Artists.Where(x => x.Id == item.ArtistId).FirstAsync();
+                
+                AlbumsViewModels.Add(Mapper.AlbumToViewModel(item,null,Mapper.ArtistToViewModel(artist)));
             }
-            return adapterAlbums;
+            return AlbumsViewModels;
         }
 
         // GET: api/Albums/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<AdapterAlbum>> GetAlbum(long id)
+        public async Task<ActionResult<AlbumViewModel>> GetAlbum(long id)
         {
-            var album = await _context.Albums.Include(p => p.Songs).FirstAsync(p=>p.Id==id);
+            var album = await _context.Albums.FirstAsync(p=>p.Id==id);
 
 
             if (album == null)
             {
                 return NotFound();
             }
-            
+            var songs = await _context.Songs.Where(x=>x.AlbumId==album.Id).ToListAsync();
+            List<SongViewModel> songViewModels = new List<SongViewModel>();
+            foreach (var item in songs)
+            {
+                songViewModels.Add(Mapper.SongToViewModel(item));
+            }
+            var artist = await _context.Artists.Where(x => x.Id == album.ArtistId).FirstAsync();
 
-            return new AdapterAlbum(album);
+
+            return Mapper.AlbumToViewModel(album, songViewModels, Mapper.ArtistToViewModel(artist));
         }
 
         // PUT: api/Albums/5

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Music_Streaming.Context;
 using Music_Streaming.Models;
+using Music_Streaming.ViewModels;
+using Music_Streaming.Mappers;
 
 namespace Music_Streaming.Controllers
 {
@@ -16,6 +18,8 @@ namespace Music_Streaming.Controllers
     {
         private readonly MusicContext _context;
 
+
+
         public ArtistsController(MusicContext context)
         {
             _context = context;
@@ -23,23 +27,43 @@ namespace Music_Streaming.Controllers
 
         // GET: api/Artists
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Artist>>> GetArtists()
+        public async Task<ActionResult<IEnumerable<ArtistViewModel>>> GetArtists([FromQuery] int pageSize = 30, [FromQuery] int pageIndex = 0)
         {
-            return await _context.Artists.ToListAsync();
+            var artists = await _context.Artists.Skip(pageSize * pageIndex).Take(pageSize).ToListAsync();
+            List<ArtistViewModel> ArtistsViewModels = new List<ArtistViewModel>();
+            foreach (var item in artists)
+            {
+                ArtistsViewModels.Add(Mapper.ArtistToViewModel(item));
+            }
+            return ArtistsViewModels;
         }
 
         // GET: api/Artists/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Artist>> GetArtist(long id)
+        public async Task<ActionResult<ArtistViewModel>> GetArtist(long id)
         {
-            var artist = await _context.Artists.FindAsync(id);
+            var artist = await _context.Artists.FirstOrDefaultAsync();
 
             if (artist == null)
             {
                 return NotFound();
             }
+            var albums = await _context.Albums.Where(x => x.ArtistId == artist.Id).ToListAsync();
+            List<AlbumViewModel> albumViewModels = new List<AlbumViewModel>();
+            
+            foreach (var item in albums)
+            {
+                var songs = await _context.Songs.Where(x => x.AlbumId == item.Id).ToListAsync();
+                List<SongViewModel> songViewModels = new List<SongViewModel>();
+                foreach (var song in songs)
+                {
+                    songViewModels.Add(Mapper.SongToViewModel(song));
+                }
 
-            return artist;
+                albumViewModels.Add(Mapper.AlbumToViewModel(item,songViewModels,Mapper.ArtistToViewModel(artist)));
+            }
+
+            return Mapper.ArtistToViewModel(artist, albumViewModels);
         }
 
         // PUT: api/Artists/5
@@ -99,7 +123,7 @@ namespace Music_Streaming.Controllers
             _context.Artists.Remove(artist);
             await _context.SaveChangesAsync();
 
-            return artist;
+            return Ok();
         }
 
         private bool ArtistExists(long id)

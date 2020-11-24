@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Music_Streaming.Context;
 using Music_Streaming.Models;
+using Music_Streaming.ViewModels;
+using Music_Streaming.Mappers;
 
 namespace Music_Streaming.Controllers
 {
@@ -26,14 +28,13 @@ namespace Music_Streaming.Controllers
         // GET: api/Songs
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<AdapterSong>>> GetMusicItems()
+        public async Task<ActionResult<IEnumerable<SongViewModel>>> GetMusicItems([FromQuery] int pageSize = 30, [FromQuery] int pageIndex = 0)
         {
-            var songs = await _context.Songs.Include(p => p.Album).ToListAsync();
-            List<AdapterSong> adapterSongs = new List<AdapterSong>();
+            var songs = await _context.Songs.Skip(pageSize * pageIndex).Take(pageSize).Include(p => p.Album).ToListAsync();
+            List<SongViewModel> adapterSongs = new List<SongViewModel>();
             foreach (var item in songs)
             {
-                adapterSongs.Add(new AdapterSong(item));
-                
+                adapterSongs.Add(Mapper.SongToViewModel(item));
             }
             return adapterSongs;
             
@@ -42,7 +43,7 @@ namespace Music_Streaming.Controllers
         // GET: api/Songs/5 
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<ActionResult<Song>> GetSong(long id)
+        public async Task<ActionResult<SongViewModel>> GetSong(long id)
         {
             var song = await _context.Songs.FindAsync(id);
 
@@ -51,7 +52,7 @@ namespace Music_Streaming.Controllers
                 return NotFound();
             }
 
-            return song;
+            return Mapper.SongToViewModel(song);
         }
 
         // PUT: api/Songs/5

@@ -8,5 +8,8 @@ namespace Music_Streaming.Authentication
 {
     public class ApplicationUser : IdentityUser
     {
+        public DateTime DateTimeCreated { get; set; }
+
+        public DateTime LastLoggedIn { get; set; }
     }
 }

@@ -68,7 +68,7 @@ namespace Music_Streaming
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, MusicContext context)
         {
             if (env.IsDevelopment())
             {
@@ -84,6 +84,9 @@ namespace Music_Streaming
 
             app.UseAuthentication();
             app.UseAuthorization();
+            IdentityDataInitializer.SeedData(userManager, roleManager, context);
+
+            DbInitializer.Initialize(context);
 
             app.UseEndpoints(endpoints =>
             {

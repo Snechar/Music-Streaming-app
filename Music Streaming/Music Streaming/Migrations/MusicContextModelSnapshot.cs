@@ -225,6 +225,9 @@ namespace Music_Streaming.Migrations
                     b.Property<long>("ArtistId")
                         .HasColumnType("bigint");
 
+                    b.Property<DateTime>("DateTimeCreated")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -259,6 +262,9 @@ namespace Music_Streaming.Migrations
 
                     b.Property<long>("AlbumId")
                         .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DateTimeCreated")
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("Length")
                         .HasColumnType("float");
