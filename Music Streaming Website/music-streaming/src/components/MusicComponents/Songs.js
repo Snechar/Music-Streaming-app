@@ -16,12 +16,12 @@ export const songs = params =>{
     <tbody>
         <tr>
            <td onClick={()=> params.setsongUrl("Music/Plini/Other Things/1.mp3")} >Selenium Forest</td>
-            <td>Plini</td>
+           <td onClick={()=> params.setAddPlaylist("Music/Plini/Other Things/1.mp3")}>Plini</td>
             <td className="timer">3:14</td>
         </tr>
         <tr>
            <td onClick={()=> params.setsongUrl("Music/Plini/Other Things/2.mp3")} >Electric Sunrise</td>
-            <td>Plini</td>
+            <td onClick={()=> params.setAddPlaylist("Music/Plini/Other Things/2.mp3")}>Plini</td>
             <td className="timer">5:05</td>
         </tr>
     </tbody>

@@ -36,7 +36,7 @@ componentDidMount() {
         return(
             <nav className="NavbarItems">
            
-            <Link exact className="logo-link" to={'/home'}> <h1 className="navbar-logo">Voughtify<i className="fab fa-spotify"></i></h1></Link>
+            <Link  className="logo-link" to={'/home'}> <h1 className="navbar-logo">Voughtify<i className="fab fa-spotify"></i></h1></Link>
               
                 <div className="menu-icon" onClick={this.handleClick}>
                     <i className={this.state.clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
@@ -45,8 +45,8 @@ componentDidMount() {
                     <ul className = {this.state.clicked ? 'nav-menu active' : 'nav-menu'}>
                  <li>
               
-                    <NavLink exact className="nav-links" to={'/home'}>Songs</NavLink>
-                    <NavLink exact className="nav-links" to={'/account'}>My Account</NavLink>
+                    <NavLink  className="nav-links" to={'/home'}>Songs</NavLink>
+                    <NavLink  className="nav-links" to={'/account'}>My Account</NavLink>
                  
                     
                     </li>
