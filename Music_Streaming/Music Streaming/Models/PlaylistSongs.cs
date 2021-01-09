@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 
 namespace Music_Streaming.Models
 {
-    public class Artist
+    public class PlaylistSongs
     {
+
         public long Id { get; set; }
-        public string UserId { get; set; }
-        public string Name { get; set; }
-        public ICollection<Album> Albums { get; set; }
+        public long SongId { get; set; }
+        public long PlaylistId { get; set; }
+        public Playlist Playlist { get; set; }
 
     }
 }

@@ -1,0 +1,39 @@
+body{
+    background-color: transparent !important;
+
+    
+}
+.card{
+    background-color: transparent !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 2.5%;
+}
+.center-text{
+    text-align: center;
+    font-size: 25px;
+    color: white;
+}
+.song-list{
+    margin-bottom: 2.5%;
+}
+
+table{
+    
+    background-color: rgb(15, 15,20,0.7) !important ;
+    width: 100%;
+
+        color: white;
+        
+    
+    
+    }
+    table tr:not(:last-of-type){
+        border-bottom: 1px solid #282828;
+    }
+    table td{
+        padding:20px 0;
+        margin-left: 55px;
+    
+    }

@@ -1,6 +1,8 @@
-import React, { Component  , Fragment} from 'react';
+import React, { Component} from 'react';
 import { NavLink, Link} from 'react-router-dom';
-import {MenuItems} from "./MenuItems";
+import Cookie from "js-cookie"
+import { useHistory, Redirect } from "react-router-dom";
+
 import './Navbar.css';
 
 
@@ -19,11 +21,13 @@ class Navbar extends Component{
 }
 
 componentDidMount() {
-    if (document.cookie.split(';').filter((item) => item.trim().startsWith('logedIn=')).length) {
+  console.log(localStorage.getItem("loggedIn"))
+  console.log(localStorage.getItem("loggedIn") == 1)
+    if (localStorage.getItem("loggedIn") == 1) {
       this.setState({ loggedIn: true })
     }
     window.setInterval(() => {
-      if (document.cookie.split(';').filter((item) => item.trim().startsWith('logedIn=true')).length) {
+      if (localStorage.getItem("loggedIn") == 1) {
         this.setState({ loggedIn: true })
       }
       else {
@@ -34,6 +38,7 @@ componentDidMount() {
 
     render()  {
         return(
+          <div>
             <nav className="NavbarItems">
            
             <Link  className="logo-link" to={'/home'}> <h1 className="navbar-logo">Voughtify<i className="fab fa-spotify"></i></h1></Link>
@@ -46,7 +51,7 @@ componentDidMount() {
                  <li>
               
                     <NavLink  className="nav-links" to={'/home'}>Songs</NavLink>
-                    <NavLink  className="nav-links" to={'/account'}>My Account</NavLink>
+                    <NavLink  className="nav-links"  to={'/account'}>Account</NavLink>
                  
                     
                     </li>
@@ -63,6 +68,7 @@ componentDidMount() {
 
 
             </nav>
+            </div>
         )
     }
 }

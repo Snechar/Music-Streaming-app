@@ -10,6 +10,8 @@ using Music_Streaming.Context;
 using Music_Streaming.Models;
 using Music_Streaming.ViewModels;
 using Music_Streaming.Mappers;
+using Microsoft.AspNetCore.Identity;
+using Music_Streaming.Authentication;
 
 namespace Music_Streaming.Controllers
 {
@@ -19,10 +21,14 @@ namespace Music_Streaming.Controllers
     public class SongsController : ControllerBase
     {
         private readonly MusicContext _context;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public SongsController(MusicContext context)
+        public SongsController(MusicContext context,UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
         // GET: api/Songs
@@ -34,7 +40,8 @@ namespace Music_Streaming.Controllers
             List<SongViewModel> adapterSongs = new List<SongViewModel>();
             foreach (var item in songs)
             {
-                adapterSongs.Add(Mapper.SongToViewModel(item));
+                var artist = await _context.Artists.Where(x => x.Id == item.Album.ArtistId).FirstAsync();
+                adapterSongs.Add(Mapper.SongToViewModel(item,artist));
             }
             return adapterSongs;
             
@@ -45,14 +52,14 @@ namespace Music_Streaming.Controllers
         [Authorize]
         public async Task<ActionResult<SongViewModel>> GetSong(long id)
         {
-            var song = await _context.Songs.FindAsync(id);
+            var song = await _context.Songs.Include(p => p.Album).Where(x => x.Id == id).FirstAsync();
 
             if (song == null)
             {
                 return NotFound();
             }
-
-            return Mapper.SongToViewModel(song);
+            var artistman = await _context.Artists.Where(x => x.Id == song.Album.ArtistId).FirstAsync();
+            return Mapper.SongToViewModel(song,artistman);
         }
 
         // PUT: api/Songs/5
@@ -93,29 +100,69 @@ namespace Music_Streaming.Controllers
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Song>> PostSong(Song song)
+        public async Task<ActionResult<SongViewModel>> PostSong(SongViewModel song)
         {
-            _context.Songs.Add(song);
+
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            if (user == null)
+            {
+                return Unauthorized("It stops here");
+            }
+            var artist = await _context.Artists.Where(x => x.UserId == user.Id).FirstAsync();
+
+            if(artist.UserId != user.Id)
+            {
+                return Unauthorized("You are not the owner of this album");
+            }
+
+            var albumCheck = await _context.Albums.Where(x => x.Id == song.AlbumId).FirstAsync();
+
+            if (albumCheck == null)
+            {
+                return BadRequest("Album does not exist");
+            }
+
+
+            Song song1 = new Song
+            {
+                Name= song.Name,
+                AlbumId= song.AlbumId,
+                DateTimeCreated = DateTime.Now,
+                Length = song.Length,
+                
+                
+            };
+
+            _context.Songs.Add(song1);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSong", new { id = song.Id }, song);
+            return CreatedAtAction("GetSong", new { id = song1.Id }, song);
         }
 
         // DELETE: api/Songs/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<Song>> DeleteSong(long id)
+        [Authorize]
+        public async Task<ActionResult<SongViewModel>> DeleteSong(long id)
         {
-            var song = await _context.Songs.FindAsync(id);
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            if (user == null)
+            {
+                return Unauthorized(new Response { Status = "Fail", Message = "Stop playing around with the API calls, you can't get this error unless you try to backdoor" });
+            }
+            var song = await _context.Songs.Include(p=>p.Album).Where(p=>p.Id==id).FirstOrDefaultAsync();
             if (song == null)
             {
-                return NotFound();
+                return NotFound(new Response { Status = "Fail", Message = "Song was not found" });
             }
-
+            var artist = await _context.Artists.Where(p => p.Id == song.Album.ArtistId).FirstOrDefaultAsync();
+            if(artist == null)
+            {
+                return BadRequest(new Response { Status = "Fail", Message = "Artist does not exist" });
+            }
             _context.Songs.Remove(song);
             await _context.SaveChangesAsync();
 
-            return song;
+            return Mapper.SongToViewModel(song, artist);
         }
 
         private bool SongExists(long id)

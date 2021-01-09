@@ -1,0 +1,129 @@
+table{
+    color: white;
+}
+table tr:not(:last-of-type){
+    border-bottom: 1px solid #282828;
+}
+table td{
+    padding:20px 0;
+
+}
+
+.first-row{
+    margin-left: 25%;
+}
+.notshow{
+    display:none;
+}
+.gg-play-button {
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    transform: scale(var(--ggs,1));
+    width: 22px;
+    height: 22px
+}
+.gg-play-button::before {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    width: 0;
+    height: 10px;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 20px solid;
+    left: 50px;
+
+}
+
+.play-button
+{
+    display: none;
+   
+}
+tr:hover >td>i{
+
+    display:block;
+    
+
+}
+i>a:hover>i{
+    display: none;
+}
+
+.fa-ellipsis-h
+{
+    right:500px;
+}
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Dropdown Content (Hidden by Default) */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    margin-left: -150px;
+    margin-top: -25px;
+    background-color: black;
+    min-width: 150px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  /* Links inside the dropdown */
+  .dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  /* Change color of dropdown links on hover */
+  .dropdown-content a:hover {background-color: #ddd}
+  
+  /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+  .show {display:block;}
+
+.drop-down:hover .dropdown-content{display: block;}
+
+
+.nav-links2{
+
+    display:grid;
+    color: white;
+    text-decoration: none;
+
+}
+.nav-links2:hover{
+    color: white;
+    text-decoration: none;
+}
+.playlist-title{
+    padding-top: 1.5%;
+}
+.fixed{
+    position:fixed;
+}
+.loading{
+position:fixed;
+}
+
+
+
+@media screen and (max-width: 960px)
+{
+    
+    .play-button
+    {
+        display: block;
+       
+    }
+}
+
+
+
+

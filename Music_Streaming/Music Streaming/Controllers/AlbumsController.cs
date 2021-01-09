@@ -10,6 +10,8 @@ using Music_Streaming.Context;
 using Music_Streaming.Models;
 using Music_Streaming.ViewModels;
 using Music_Streaming.Mappers;
+using Microsoft.AspNetCore.Identity;
+using Music_Streaming.Authentication;
 
 namespace Music_Streaming.Controllers
 {
@@ -19,10 +21,14 @@ namespace Music_Streaming.Controllers
     public class AlbumsController : ControllerBase
     {
         private readonly MusicContext _context;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public AlbumsController(MusicContext context)
+        public AlbumsController(MusicContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
         // GET: api/Albums
@@ -57,7 +63,8 @@ namespace Music_Streaming.Controllers
             List<SongViewModel> songViewModels = new List<SongViewModel>();
             foreach (var item in songs)
             {
-                songViewModels.Add(Mapper.SongToViewModel(item));
+                var artistman = await _context.Artists.Where(x => x.Id == item.Album.ArtistId).FirstAsync();
+                songViewModels.Add(Mapper.SongToViewModel(item,artistman));
             }
             var artist = await _context.Artists.Where(x => x.Id == album.ArtistId).FirstAsync();
 
@@ -101,29 +108,81 @@ namespace Music_Streaming.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Album>> PostAlbum(Album album)
+        [Authorize]
+        public async Task<ActionResult<AlbumViewModel>> PostAlbum(AlbumViewModel album)
         {
-            _context.Albums.Add(album);
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            if (user == null)
+            {
+                return Unauthorized("It stops here");
+            }
+            var artist = await _context.Artists.Where(x => x.UserId == user.Id).FirstAsync();
+
+            var albumCheck = await _context.Albums.Where(x => x.Name == album.Name).FirstAsync();
+
+            if(albumCheck != null)
+            {
+                return Unauthorized("There already is an album with this name");
+            }
+
+            Album album1 = new Album
+            {
+                Name = album.Name,
+                DateTimeCreated = DateTime.Now,
+                ArtistId= artist.Id,
+                
+            };
+            _context.Albums.Add(album1);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAlbum", new { id = album.Id }, album);
+            return CreatedAtAction("GetAlbum", new { id = album1.Id }, album);
         }
 
         // DELETE: api/Albums/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<ActionResult<Album>> DeleteAlbum(long id)
         {
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            if (user == null)
+            {
+                return Unauthorized(new Response { Status = "Fail", Message = "Invalid User" });
+            }
+            var roles = await userManager.GetRolesAsync(user);
             var album = await _context.Albums.FindAsync(id);
             if (album == null)
             {
-                return NotFound();
+                return NotFound(new Response { Status = "Fail", Message = "Invalid Album" });
             }
 
-            _context.Albums.Remove(album);
-            await _context.SaveChangesAsync();
+            if (roles[0] == "Admin")
+            {
+                _context.Albums.Remove(album);
+                await _context.SaveChangesAsync();
 
-            return album;
+                return album;
+            }
+            else
+            {
+
+                var artist = await _context.Artists.Where(x => x.UserId == user.Id).FirstAsync();
+                if (artist == null)
+                {
+                    return BadRequest(new Response { Status = "Fail", Message = "User is not an artist" });
+                }
+
+
+
+                if (album.ArtistId != artist.Id)
+                {
+                    return Unauthorized(new Response { Status = "Fail", Message = "User does not own album" });
+                }
+
+                _context.Albums.Remove(album);
+                await _context.SaveChangesAsync();
+
+                return album;
+            }
         }
 
         private bool AlbumExists(long id)

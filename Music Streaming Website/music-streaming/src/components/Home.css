@@ -1,16 +1,4 @@
-table{
-    border-collapse: collapse;
-    margin-top: 15px;
-    font-size: initial;
-    width: 100%;
-    color: white;
-}
-table tr:not(:last-of-type){
-    border-bottom: 1px solid #282828;
-}
-table td{
-    padding:10px 0;
-}
+
 .player{
 
     margin-left: -20px;
@@ -18,7 +6,7 @@ table td{
     background-color:black;
     position: fixed;
     bottom: 0;
-    width: 100%;
+    width: 101.1%;
 }
 .rhap_container{
     align-content: center;
@@ -30,6 +18,15 @@ table td{
 .rhap_time{
     color: blue;
 }
+.nav-links2{
+    display:grid;
+    color: white;
+    text-decoration: none;
+    padding: 1.5rem 1rem;
+    margin-left: 50px;
+}
+
+
 @media screen and (max-width: 960px)
 {
 Button {
@@ -38,4 +35,8 @@ Button {
 .timer{
     display:none;
 }
+}
+
+.imageCard{
+    background-color: violet;
 }

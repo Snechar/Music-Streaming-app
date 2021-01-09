@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,  } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope, faHome, faLock, faSearch, faTimes, faUser, faUserCircle, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faLock, faUsers } from '@fortawesome/free-solid-svg-icons';
 import AccountService from "../services/AccountService";
 
 const Register = () => {

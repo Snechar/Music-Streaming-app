@@ -1,17 +1,20 @@
-import React, { useState, useEffect, Component,useRef } from "react";
-import Card from "react-bootstrap/Card";
+import React, { useState, useEffect, useRef} from "react";
 import 'react-h5-audio-player/lib/styles.css';
-import {Container, Row, Col} from 'react-bootstrap'
+import { Container,} from 'react-bootstrap'
 import AudioPlayer from 'react-h5-audio-player';
 import './Home.css'
 import {
-    BrowserRouter as Router,
-    Route,
-    Redirect
-  } from "react-router-dom";
-  import Cookie from "js-cookie"
-import { useHistory } from "react-router-dom";
+  Route,
+} from "react-router-dom";
+import Cookie from "js-cookie"
 import Song from "./MusicComponents/Songs"
+import Album from "./MusicComponents/Album"
+import Profile from "./AccountComponents/ProfilePage"
+import "../components/MusicComponents/Songs.css"
+
+
+
+import { useHistory, Redirect } from "react-router-dom";
 
 
 
@@ -19,69 +22,123 @@ import Song from "./MusicComponents/Songs"
 
 
 
-const Home=React.memo((props)=>{
-  const [songUrl, setsongUrl] = useState("");
-  const [addPlaylist, setAddPlaylist] = useState("");
+
+const Home = React.memo((props) => {
+  const [songUrl, setsongUrl] = useState();
+  const [songData, setSongData] = useState([]);
+  const [addPlaylist, setAddPlaylist] = useState();
+  const[deletePlaylist, setDeletePlaylist] = useState();
   const songRef = useRef();
-  var playlist = React.useMemo(()=>[],[],) 
-  var index = React.useMemo(()=>0,[],) 
-
- 
-  const history = useHistory();
+  const playlistRef = useRef();
+  var playlist = React.useMemo(() => [], [],)
+  var playlistFull = React.useMemo(() => [], [],)
+  var run = false
   useEffect(() => {
-    if(songRef.current == addPlaylist)
-    {
-
+    if (playlist.includes(addPlaylist)) {
+    console.log("already added")
     }
-    else{
+    else if(!playlist.includes(addPlaylist)) {
+      if(addPlaylist != undefined)
+      {
       songRef.current = addPlaylist; // Write it to the ref 
-      playlist.push(songRef.current )
-      console.log(playlist)
-      console.log(index)
+      playlistRef.current = songData;
+      playlistFull.push(playlistRef.current)
+      playlist.push(songRef.current)
+      }
+
 
     }
+if(deletePlaylist===1){
+  console.log("playlist resetted" )
+      playlistFull.length=0;
+      playlist.length=0;
+      setDeletePlaylist(0);
+   
+     }
+
+
+
   });
-  
 
-
-  if(Cookie.get('logedIn') == "false"||Cookie.get('logedIn') == null )
+  if(localStorage.getItem('token')  !== null)
   {
-     return null
+var jwt = require('jsonwebtoken');
+const token = localStorage.getItem('token');
+var decodedToken=jwt.decode(token, {complete: true});
+var dateNow = new Date();
 
+if(decodedToken.exp < dateNow.getTime())
+{
+  localStorage.clear("token")
+}
   }
-  if(window.location.pathname == "/login" || window.location.pathname == "/register")
-  {
+
+
+
+
+
+  if (localStorage.getItem('token') === "false" || localStorage.getItem('token')  == null) {
+    console.log("this should redirect")
+    return (<Redirect push to="/login" />)
+  }
+
+  if (window.location.pathname === "/login" || window.location.pathname === "/register") {
     return null;
   }
 
-    return( 
+  return (
 
-      <div >
-      <Route path = "/home">
-<Song setsongUrl={setsongUrl} setAddPlaylist={setAddPlaylist}/>
-</Route>
-<div className ="player">
-<Container>
-
-  <AudioPlayer
-  layout="horizontal-reverse"
-  customAdditionalControls={[]}
-  src={songUrl}
-  autoPlay
-  onPlay={e=>(console.log(songUrl)>console.log(playlist))}
- onEnded={()=>setsongUrl(playlist[1])>playlist.shift()>console.log(songUrl)>console.log(playlist)}
-    // other props here
-  />
-
-  </Container>
+    <div >
 
 
-</div>
+      <Route path="/home">
+        <Song setsongUrl={setsongUrl} setSongData={setSongData} setAddPlaylist={setAddPlaylist} setDeletePlaylist={setDeletePlaylist} />
+      </Route>
+      <Route path = "/album">
+        <Album setsongUrl={setsongUrl} setSongData={setSongData} setAddPlaylist={setAddPlaylist} setDeletePlaylist ={setDeletePlaylist}></Album>
+        </Route>
+      <Route path = "/account" component ={Profile}/>
+      <a>.</a>
 
-</div>
+  
+      <div className="player">
+        <Container>
+
+          <AudioPlayer
+           showSkipControls
+           showJumpControls={false}
+            layout="horizontal-reverse"
+            customAdditionalControls={[]}
+            src={songUrl}
+            onPlay={e => (console.log(songUrl) > console.log(playlist)>console.log(playlistFull)>console.log(deletePlaylist))}
+            onEnded={() => setsongUrl(playlist[0]) > playlist.shift() > console.log(songUrl) > console.log(playlist)}
+            onClickNext={()=>{
+              if(playlist.length >1)
+              {
+              setsongUrl(playlist[0])
+            playlist.shift()
+            playlistFull.shift()
+
+            console.log(songUrl)
+            
+            console.log(playlist)
+            console.log(playlistFull)
+            }
+            else{ console.log("there's no playlist")}
+            }}
+
+          // other props here
+          />
+
+        </Container>
 
 
-    )
+      </div>
+
+    </div>
+
+
+  )
 });
 
 
