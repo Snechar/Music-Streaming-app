@@ -51,17 +51,23 @@ namespace Music_Streaming.Data.Seeding
                     DateTimeCreated = DateTime.Parse("2020-9-19-1:35")
 
                 };
-                Playlist playlist = new Playlist
+                Playlist playlist1 = new Playlist
                 {
                     Name = "Plini is good",
                     Public = true,
 
                 };
-                PlaylistSongs playlistSongs = new PlaylistSongs
+                PlaylistSongs playlistSongs1 = new PlaylistSongs
                 {
                     SongId = 1,
-                    PlaylistId= 1,
+                    PlaylistId = 1,
                 };
+                PlaylistSongs playlistSongs2 = new PlaylistSongs
+                {
+                    SongId = 2,
+                    PlaylistId = 1,
+                };
+
                 musicContext.Artists.Add(artist);
                 musicContext.SaveChanges();
                 musicContext.Albums.Add(album1);
@@ -69,9 +75,11 @@ namespace Music_Streaming.Data.Seeding
                 musicContext.Songs.Add(song1);
                 musicContext.Songs.Add(song2);
                 musicContext.SaveChanges();
-                musicContext.Playlist.Add(playlist);
+                musicContext.Playlist.Add(playlist1);
                 musicContext.SaveChanges();
-                musicContext.PlaylistSongs.Add(playlistSongs);
+                musicContext.PlaylistSongs.Add(playlistSongs1);
+                musicContext.SaveChanges();
+                musicContext.PlaylistSongs.Add(playlistSongs2);
                 musicContext.SaveChanges();
 
 
