@@ -67,33 +67,39 @@ namespace Music_Streaming.Controllers
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutSong(long id, Song song)
+        public async Task<IActionResult> PutSong(int id, SongViewModel song)
         {
-            if (id != song.Id)
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            if (user == null)
             {
-                return BadRequest();
+                return Unauthorized("It stops here");
             }
 
-            _context.Entry(song).State = EntityState.Modified;
-
-            try
+            var songToEdit = await _context.Songs.Where(x => x.Id == id).Include(p=>p.Album).FirstOrDefaultAsync();
+            if (songToEdit != null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SongExists(id))
+                var artist = await _context.Artists.Where(x => x.Id == songToEdit.Album.ArtistId).FirstOrDefaultAsync();
+                if (artist.UserId == user.Id)
                 {
-                    return NotFound();
+
+                    songToEdit.Name = song.Name;
+                    _context.SaveChanges();
                 }
                 else
                 {
-                    throw;
+                    return Unauthorized();
                 }
+
+            }
+            else
+            {
+                return NotFound();
             }
 
-            return NoContent();
+            return Ok();
+
         }
+
 
         // POST: api/Songs
         // To protect from overposting attacks, enable the specific properties you want to bind to, for

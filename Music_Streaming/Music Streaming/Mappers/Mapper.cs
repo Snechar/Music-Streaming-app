@@ -48,5 +48,11 @@ namespace Music_Streaming.Mappers
                 PlaylistSongs = songViewModels
 
             };
+        public static PlaylistForAddingViewModel PlaylistForAddingToViewModel(Playlist playlist) =>
+            new PlaylistForAddingViewModel
+            {
+                Id = playlist.Id,
+                Name = playlist.Name,
+            };
     }
 }

@@ -78,33 +78,34 @@ namespace Music_Streaming.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutArtist(long id, Artist artist)
         {
-            if (id != artist.Id)
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            if (user == null)
             {
-                return BadRequest();
+                return Unauthorized("It stops here");
             }
-
-            _context.Entry(artist).State = EntityState.Modified;
-
-            try
+            var artistToEdit = await _context.Artists.Where(x => x.Id == id).FirstOrDefaultAsync();
+            if (artistToEdit != null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ArtistExists(id))
+                if (artistToEdit.UserId == user.Id)
                 {
-                    return NotFound();
+                    artistToEdit.Name = artist.Name;
+                    _context.SaveChanges();
                 }
                 else
                 {
-                    throw;
+                    return Unauthorized();
                 }
             }
-
-            return NoContent();
+            else
+            {
+                return NotFound();
+            }
+            return Ok();
         }
+
 
         // POST: api/Artists
         // To protect from overposting attacks, enable the specific properties you want to bind to, for

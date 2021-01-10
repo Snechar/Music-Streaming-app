@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Music_Streaming.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,6 +13,7 @@ namespace Music_Streaming.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -52,11 +53,27 @@ namespace Music_Streaming.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    DateTimeCreated = table.Column<DateTime>(nullable: false),
+                    LastLoggedIn = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PlaylistSongs",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SongId = table.Column<long>(nullable: false),
+                    PlaylistId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlaylistSongs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -187,6 +204,28 @@ namespace Music_Streaming.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Playlist",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    PlaylistSongsId = table.Column<long>(nullable: true),
+                    Public = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Playlist", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Playlist_PlaylistSongs_PlaylistSongsId",
+                        column: x => x.PlaylistSongsId,
+                        principalTable: "PlaylistSongs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Songs",
                 columns: table => new
                 {
@@ -253,6 +292,11 @@ namespace Music_Streaming.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Playlist_PlaylistSongsId",
+                table: "Playlist",
+                column: "PlaylistSongsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Songs_AlbumId",
                 table: "Songs",
                 column: "AlbumId");
@@ -276,6 +320,9 @@ namespace Music_Streaming.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Playlist");
+
+            migrationBuilder.DropTable(
                 name: "Songs");
 
             migrationBuilder.DropTable(
@@ -283,6 +330,9 @@ namespace Music_Streaming.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "PlaylistSongs");
 
             migrationBuilder.DropTable(
                 name: "Albums");

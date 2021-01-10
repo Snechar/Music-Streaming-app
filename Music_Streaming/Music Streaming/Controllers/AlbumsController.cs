@@ -114,7 +114,7 @@ namespace Music_Streaming.Controllers
             var user = await userManager.FindByNameAsync(User.Identity.Name);
             if (user == null)
             {
-                return Unauthorized("It stops here");
+                return Unauthorized(new Response { Status = "Fail", Message = "I don't know how you could possibly get this error message but you managed to do it" });
             }
             var artist = await _context.Artists.Where(x => x.UserId == user.Id).FirstAsync();
 
@@ -122,7 +122,7 @@ namespace Music_Streaming.Controllers
 
             if(albumCheck != null)
             {
-                return Unauthorized("There already is an album with this name");
+                return Unauthorized(new Response { Status = "Fail", Message = "There is already an album with this name" });
             }
 
             Album album1 = new Album

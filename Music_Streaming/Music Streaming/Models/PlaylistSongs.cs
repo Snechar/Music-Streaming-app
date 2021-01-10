@@ -10,8 +10,8 @@ namespace Music_Streaming.Models
 
         public long Id { get; set; }
         public long SongId { get; set; }
+        public ICollection<Playlist> Playlists { get; set; }
         public long PlaylistId { get; set; }
-        public Playlist Playlist { get; set; }
 
     }
 }
