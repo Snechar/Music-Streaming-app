@@ -25,6 +25,12 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci .\Music Streaming Website\music-streaming
-    - run: npm run build .\Music Streaming Website\music-streaming --if-present
-    - run: npm test .\Music Streaming Website\music-streaming
+    - name: install dependencies
+      run: npm install
+      working-directory: Music Streaming Website\music-streaming
+    - name: Build
+      run: npm build
+      working-directory: Music Streaming Website\music-streaming
+    - name: Test
+      run: npm test
+      working-directory: Music Streaming Website\music-streaming
