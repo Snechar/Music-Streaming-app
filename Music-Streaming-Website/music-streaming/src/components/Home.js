@@ -156,14 +156,14 @@ else{
             layout="horizontal-reverse"
             customAdditionalControls={[]}
             src={songUrl}
-            onEnded={() =>  {if(playlist.length >1)
+            onEnded={() =>  {if(playlist.length>=1)
               {
               setsongUrl(playlist[0])
             playlist.shift()
             playlistFull.shift()
             }}}
             onClickNext={()=>{
-              if(playlist.length >1)
+              if(playlist.length >= 1)
               {
               setsongUrl(playlist[0])
             playlist.shift()

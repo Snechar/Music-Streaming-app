@@ -110,7 +110,7 @@ class UploadComponent extends Component {
 
                         ).then(res => { //print response status
                             console.log(res.statusText)
-
+                            window.location.reload();
                         }).catch((error) => {
                             console.log(error);
 
@@ -154,6 +154,7 @@ class UploadComponent extends Component {
 
                                 ).then(res => { //print response status
                                     console.log(res.statusText)
+                                    window.location.reload();
 
                                 }).catch((error) => {
                                     console.log(error);
@@ -172,7 +173,7 @@ class UploadComponent extends Component {
                             data.append('albumName', result.data.name)
                             data.append('type', "album")
 
-                            axios.post("http://localhost:8000/upload", data, {
+                            UploadService.Upload( data, {
                                 onUploadProgress: ProgressEvent => {
                                     this.setState({
                                         loaded: (ProgressEvent.loaded / ProgressEvent.total * 100),
@@ -182,6 +183,7 @@ class UploadComponent extends Component {
 
                             ).then(res => { //print response status
                                 console.log(res.statusText)
+                                window.location.reload();
 
                             }).catch((error) => {
                                 console.log(error);
