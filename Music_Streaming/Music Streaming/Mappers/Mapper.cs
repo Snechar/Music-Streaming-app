@@ -17,7 +17,8 @@ namespace Music_Streaming.Mappers
                 AlbumName = song.Album.Name,
                 Name = song.Name,
                 Length = song.Length,
-                ArtistName = song.Album.Artist.Name
+                ArtistName = song.Album.Artist.Name,
+                ArtistId= artist.Id
 
 
 

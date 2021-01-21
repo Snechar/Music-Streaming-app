@@ -32,6 +32,26 @@ namespace Music_Streaming.Controllers
             this.roleManager = roleManager;
         }
 
+        // GET: api/Artists/me
+        [HttpGet("me")]
+        [Authorize]
+        public async Task<ActionResult<ArtistViewModel>> GetArtists()
+        {
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            if (user == null)
+            {
+                return Unauthorized(new Response { Status = "Fail", Message = "Stop playing around with the API calls, you can't get this error unless you try to backdoor" });
+            }
+
+            var artists = await _context.Artists.Where(x => x.UserId == user.Id).FirstOrDefaultAsync();
+            if(artists==null)
+            {
+                return Unauthorized();
+            }
+
+            return Mapper.ArtistToViewModel(artists);
+        }
+
         // GET: api/Artists
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ArtistViewModel>>> GetArtists([FromQuery] int pageSize = 30, [FromQuery] int pageIndex = 0)
@@ -49,7 +69,7 @@ namespace Music_Streaming.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ArtistViewModel>> GetArtist(long id)
         {
-            var artist = await _context.Artists.FirstOrDefaultAsync();
+            var artist = await _context.Artists.Where(x=>x.Id==id).FirstOrDefaultAsync();
 
             if (artist == null)
             {
@@ -119,7 +139,7 @@ namespace Music_Streaming.Controllers
             {
                 return Unauthorized("It stops here");
             }
-            var checkArtist = await _context.Artists.Where(x => x.UserId == user.Id).FirstAsync();
+            var checkArtist = await _context.Artists.Where(x => x.UserId == user.Id).FirstOrDefaultAsync();
             if(checkArtist != null)
             {
                 return BadRequest("User already assigned to an artist");

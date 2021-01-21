@@ -36,7 +36,7 @@ namespace Music_Streaming.Controllers
         [Authorize]
         public async Task<ActionResult<IEnumerable<SongViewModel>>> GetMusicItems([FromQuery] int pageSize = 30, [FromQuery] int pageIndex = 0)
         {
-            var songs = await _context.Songs.Skip(pageSize * pageIndex).Take(pageSize).Include(p => p.Album).ToListAsync();
+            var songs = await _context.Songs.OrderByDescending(x=>x.DateTimeCreated).Skip(pageSize * pageIndex).Take(pageSize).Include(p => p.Album).ToListAsync();
             List<SongViewModel> adapterSongs = new List<SongViewModel>();
             foreach (var item in songs)
             {
@@ -112,22 +112,26 @@ namespace Music_Streaming.Controllers
             var user = await userManager.FindByNameAsync(User.Identity.Name);
             if (user == null)
             {
-                return Unauthorized("It stops here");
+                return Unauthorized(new Response { Status = "Fail", Message = "Stop playing with the variables bro" });
             }
             var artist = await _context.Artists.Where(x => x.UserId == user.Id).FirstAsync();
 
             if(artist.UserId != user.Id)
             {
-                return Unauthorized("You are not the owner of this album");
+                return Unauthorized(new Response { Status = "Fail", Message = "You are not an artist" });
             }
 
-            var albumCheck = await _context.Albums.Where(x => x.Id == song.AlbumId).FirstAsync();
+            var albumCheck = await _context.Albums.Where(x => x.Id == song.AlbumId && x.ArtistId == artist.Id).FirstAsync();
 
             if (albumCheck == null)
             {
-                return BadRequest("Album does not exist");
+                return BadRequest(new Response { Status = "Fail", Message = "You do not own the album" });
             }
-
+            var songCheck = await _context.Songs.Where(x => x.Name == song.Name).FirstOrDefaultAsync();
+            if(songCheck != null)
+            {
+                return BadRequest(new Response { Status = "Fail", Message = "A song with this name already exists" });
+            }
 
             Song song1 = new Song
             {
@@ -142,7 +146,8 @@ namespace Music_Streaming.Controllers
             _context.Songs.Add(song1);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSong", new { id = song1.Id }, song);
+            var songCheck2 = await _context.Songs.Where(x => x.Name == song.Name).FirstOrDefaultAsync();
+            return Mapper.SongToViewModel(songCheck2,artist);
         }
 
         // DELETE: api/Songs/5

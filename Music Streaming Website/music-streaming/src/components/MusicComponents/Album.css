@@ -8,11 +8,11 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 2.5%;
+    padding-top: 0.5%;
 }
 .center-text{
     text-align: center;
-    font-size: 25px;
+    font-size: 16px;
     color: white;
 }
 .song-list{
@@ -36,4 +36,16 @@ table{
         padding:20px 0;
         margin-left: 55px;
     
+    }
+
+    .add-button
+    {
+        width:100%; display: inline-block; font-size:12px; margin-right: 5px;text-align:center;
+        height: 40px;
+        color: white;
+        background-color: black ;
+        border: 1px solid white;
+    }
+    .not-so-long{
+        width: 190px !important;
     }

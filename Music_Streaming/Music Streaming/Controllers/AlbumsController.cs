@@ -103,6 +103,60 @@ namespace Music_Streaming.Controllers
 
             return NoContent();
         }
+        // GET: api/Albums/user/5
+        // Gets the albums made by the user
+        [HttpGet("user/{id}")]
+        [Authorize]
+        public async Task<ActionResult<AlbumViewModel>> GetAlbumByUser(long id)
+        {
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            if (user == null)
+            {
+                return Unauthorized(new Response { Status = "Fail", Message = "I don't know how you could possibly get this error message but you managed to do it" });
+            }
+            var artist = await _context.Artists.Where(x => x.UserId == user.Id).FirstAsync();
+            if(artist == null)
+            {
+                return Unauthorized();
+            }
+            var album = await _context.Albums.Where(p => p.Id == id).Where(x => x.ArtistId == artist.Id).FirstOrDefaultAsync();
+            if(album == null)
+            {
+                return Unauthorized();
+            }
+
+            
+            return Mapper.AlbumToViewModel(album, null, Mapper.ArtistToViewModel(artist));
+        }
+
+        // GET: api/Albums/user
+        // Gets the albums made by the user
+        [HttpGet("user")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<AlbumViewModel>>> GetAlbumByUser()
+        {
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            if (user == null)
+            {
+                return Unauthorized(new Response { Status = "Fail", Message = "I don't know how you could possibly get this error message but you managed to do it" });
+            }
+            var artist = await _context.Artists.Where(x => x.UserId == user.Id).FirstAsync();
+            if(artist == null)
+            {
+                return Unauthorized();
+            }
+            var albums = await _context.Albums.Where(x=>x.ArtistId == artist.Id).ToListAsync();
+
+            List<AlbumViewModel> AlbumsViewModels = new List<AlbumViewModel>();
+
+            foreach (var item in albums)
+            {
+
+
+                AlbumsViewModels.Add(Mapper.AlbumToViewModel(item, null, Mapper.ArtistToViewModel(artist)));
+            }
+            return AlbumsViewModels;
+        }
 
         // POST: api/Albums
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -116,9 +170,9 @@ namespace Music_Streaming.Controllers
             {
                 return Unauthorized(new Response { Status = "Fail", Message = "I don't know how you could possibly get this error message but you managed to do it" });
             }
-            var artist = await _context.Artists.Where(x => x.UserId == user.Id).FirstAsync();
+            var artist = await _context.Artists.Where(x => x.UserId == user.Id).FirstOrDefaultAsync();
 
-            var albumCheck = await _context.Albums.Where(x => x.Name == album.Name).FirstAsync();
+            var albumCheck = await _context.Albums.Where(x => x.Name == album.Name).FirstOrDefaultAsync();
 
             if(albumCheck != null)
             {
@@ -154,13 +208,20 @@ namespace Music_Streaming.Controllers
             {
                 return NotFound(new Response { Status = "Fail", Message = "Invalid Album" });
             }
-
-            if (roles[0] == "Admin")
+            if(roles.Count()>0)
             {
-                _context.Albums.Remove(album);
-                await _context.SaveChangesAsync();
 
-                return album;
+                if (roles[0] == "Admin")
+                {
+                    _context.Albums.Remove(album);
+                    await _context.SaveChangesAsync();
+
+                    return album;
+                }
+                else
+                {
+                    return Unauthorized(new Response { Status = "Fail", Message = "Invalid User" });
+                }
             }
             else
             {

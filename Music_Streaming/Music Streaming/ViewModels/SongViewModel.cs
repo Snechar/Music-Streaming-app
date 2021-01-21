@@ -15,6 +15,7 @@ namespace Music_Streaming.ViewModels
         public string AlbumName { get; set; }
         public long AlbumId { get; set; }
         public string ArtistName { get; set; }
+        public long ArtistId { get; set; }
         
     }
 }

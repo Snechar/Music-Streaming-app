@@ -49,7 +49,10 @@ componentDidMount() {
                 {this.state.loggedIn ?
                     <ul className = {this.state.clicked ? 'nav-menu active' : 'nav-menu'}>
                  <li>
-              
+                    <NavLink  className="nav-links"  to={'/queue'}>Queue</NavLink>
+                    <NavLink  className="nav-links"  to={'/playlists'}>Playlists</NavLink>
+                    <NavLink  className="nav-links"  to={'/artists'}>Artists</NavLink>
+                    <NavLink  className="nav-links"  to={'/albums'}>Albums</NavLink>
                     <NavLink  className="nav-links" to={'/home'}>Songs</NavLink>
                     <NavLink  className="nav-links"  to={'/account'}>Account</NavLink>
                  

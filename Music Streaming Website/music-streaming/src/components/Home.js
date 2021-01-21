@@ -11,10 +11,15 @@ import Song from "./MusicComponents/Songs"
 import Album from "./MusicComponents/Album"
 import Profile from "./AccountComponents/ProfilePage"
 import "../components/MusicComponents/Songs.css"
-
+import AlbumEditSelection from "./MusicComponents/AlbumEditSelection.js"
 
 
 import { useHistory, Redirect } from "react-router-dom";
+import Artist from "./MusicComponents/Artist";
+import Albums from "./MusicComponents/Albums.js"
+import Artists from "./MusicComponents/Artists.js"
+import UploadComponent from "./AccountComponents/UploadComponent.js"
+import FullEditPage from "./MusicComponents/FullEditPage";
 
 
 
@@ -33,6 +38,7 @@ const Home = React.memo((props) => {
   var playlist = React.useMemo(() => [], [],)
   var playlistFull = React.useMemo(() => [], [],)
   var run = false
+  var firstClick = 0
   useEffect(() => {
     if (playlist.includes(addPlaylist)) {
     console.log("already added")
@@ -64,28 +70,53 @@ if(deletePlaylist===1){
   {
 var jwt = require('jsonwebtoken');
 const token = localStorage.getItem('token');
-var decodedToken=jwt.decode(token, {complete: true});
 var dateNow = new Date();
 
-if(decodedToken.exp < dateNow.getTime())
+if(jwt.decode(token).exp !==null)
 {
-  localStorage.clear("token")
+  if(jwt.decode(token).exp * 1000 < dateNow.getTime())
+  {
+    localStorage.clear("token")
+  }
+}
+else{
+  localStorage.clear();
 }
   }
 
 
 
 
+  if (window.location.pathname === "/login" || window.location.pathname === "/register") {
+    return null;
+  }
 
   if (localStorage.getItem('token') === "false" || localStorage.getItem('token')  == null) {
     console.log("this should redirect")
     return (<Redirect push to="/login" />)
   }
 
-  if (window.location.pathname === "/login" || window.location.pathname === "/register") {
-    return null;
-  }
 
+  window.onclick = function (event) {
+    if (firstClick == 0) {
+        var ele = document.getElementsByClassName("dropdown-content")
+        for (var i = 0; i < ele.length; i++) {
+            if (ele[i].style.display == "block") {
+                firstClick = 1
+            }
+        }
+    }
+    else {
+        var ele = document.getElementsByClassName("dropdown-content")
+        for (var i = 0; i < ele.length; i++) {
+            ele[i].style.display = "none";
+            firstClick = 0
+        }
+
+
+
+    }
+}
   return (
 
     <div >
@@ -98,6 +129,21 @@ if(decodedToken.exp < dateNow.getTime())
         <Album setsongUrl={setsongUrl} setSongData={setSongData} setAddPlaylist={setAddPlaylist} setDeletePlaylist ={setDeletePlaylist}></Album>
         </Route>
       <Route path = "/account" component ={Profile}/>
+      <Route path="/artist">
+        <Artist setsongUrl={setsongUrl} setSongData={setSongData} setAddPlaylist={setAddPlaylist} setDeletePlaylist ={setDeletePlaylist}/>
+      </Route>
+      <Route path="/albums">
+        <Albums setsongUrl={setsongUrl} setSongData={setSongData} setAddPlaylist={setAddPlaylist} setDeletePlaylist ={setDeletePlaylist}/>
+      </Route>
+      <Route path="/artists">
+        <Artists setsongUrl={setsongUrl} setSongData={setSongData} setAddPlaylist={setAddPlaylist} setDeletePlaylist ={setDeletePlaylist}/>
+      </Route>
+      <Route path="/editselect">
+<AlbumEditSelection/>
+      </Route>
+      <Route path="/albumedit">
+<FullEditPage></FullEditPage>
+      </Route>
       <a>.</a>
 
   
@@ -110,19 +156,18 @@ if(decodedToken.exp < dateNow.getTime())
             layout="horizontal-reverse"
             customAdditionalControls={[]}
             src={songUrl}
-            onPlay={e => (console.log(songUrl) > console.log(playlist)>console.log(playlistFull)>console.log(deletePlaylist))}
-            onEnded={() => setsongUrl(playlist[0]) > playlist.shift() > console.log(songUrl) > console.log(playlist)}
+            onEnded={() =>  {if(playlist.length >1)
+              {
+              setsongUrl(playlist[0])
+            playlist.shift()
+            playlistFull.shift()
+            }}}
             onClickNext={()=>{
               if(playlist.length >1)
               {
               setsongUrl(playlist[0])
             playlist.shift()
             playlistFull.shift()
-
-            console.log(songUrl)
-            
-            console.log(playlist)
-            console.log(playlistFull)
             }
             else{ console.log("there's no playlist")}
             }}
