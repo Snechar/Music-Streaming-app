@@ -27,10 +27,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: install dependencies
       run: npm install
-      working-directory: .\Music-Streaming-Website\music-streaming
+      working-directory: Music-Streaming-Website\music-streaming
     - name: Build
       run: npm build
-      working-directory: .\Music-Streaming-Website\music-streaming
+      working-directory: Music-Streaming-Website\music-streaming
     - name: Test
       run: npm test
-      working-directory: .\Music-Streaming-Website\music-streaming
+      working-directory: Music-Streaming-Website\music-streaming
