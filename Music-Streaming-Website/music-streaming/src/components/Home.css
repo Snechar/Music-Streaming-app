@@ -1,0 +1,42 @@
+
+.player{
+
+    margin-left: -20px;
+    overflow: hidden;
+    background-color:black;
+    position: fixed;
+    bottom: 0;
+    width: 101.1%;
+}
+.rhap_container{
+    align-content: center;
+    background-color: rgb(15, 15,20,0.7);
+}
+.rhap_container svg{
+    color: blue;
+}
+.rhap_time{
+    color: blue;
+}
+.nav-links2{
+    display:grid;
+    color: white;
+    text-decoration: none;
+    padding: 1.5rem 1rem;
+    margin-left: 50px;
+}
+
+
+@media screen and (max-width: 960px)
+{
+Button {
+    display: block;
+}
+.timer{
+    display:none;
+}
+}
+
+.imageCard{
+    background-color: violet;
+}

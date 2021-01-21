@@ -1,0 +1,51 @@
+body{
+    background-color: transparent !important;
+
+    
+}
+.card{
+    background-color: transparent !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 0.5%;
+}
+.center-text{
+    text-align: center;
+    font-size: 16px;
+    color: white;
+}
+.song-list{
+    margin-bottom: 2.5%;
+}
+
+table{
+    
+    background-color: rgb(15, 15,20,0.7) !important ;
+    width: 100%;
+
+        color: white;
+        
+    
+    
+    }
+    table tr:not(:last-of-type){
+        border-bottom: 1px solid #282828;
+    }
+    table td{
+        padding:20px 0;
+        margin-left: 55px;
+    
+    }
+
+    .add-button
+    {
+        width:100%; display: inline-block; font-size:12px; margin-right: 5px;text-align:center;
+        height: 40px;
+        color: white;
+        background-color: black ;
+        border: 1px solid white;
+    }
+    .not-so-long{
+        width: 190px !important;
+    }

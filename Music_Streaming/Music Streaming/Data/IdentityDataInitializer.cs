@@ -25,7 +25,7 @@ namespace Music_Streaming.Data
         private static void SeedUsers(UserManager<ApplicationUser> userManager)
         {
             var hasher = new PasswordHasher<ApplicationUser>();
-            if (userManager.FindByNameAsync("test0").Result == null)
+            if (userManager.FindByNameAsync("user").Result == null)
             {
                 ApplicationUser user = new ApplicationUser();
                 user.UserName = "user";
@@ -43,6 +43,26 @@ namespace Music_Streaming.Data
                 if (result.Succeeded)
                 {
                     userManager.AddToRoleAsync(user, "User").Wait();
+                }
+            }
+            if (userManager.FindByNameAsync("tester").Result == null)
+            {
+                ApplicationUser user = new ApplicationUser();
+                user.UserName = "tester";
+                user.NormalizedUserName = "tester";
+                user.Email = "tester@gmail.com";
+                user.NormalizedEmail = "tester@gmail.com".ToUpper();
+                user.EmailConfirmed = false;
+                user.LastLoggedIn = DateTime.Now;
+                user.DateTimeCreated = DateTime.Now;
+                user.SecurityStamp = Guid.NewGuid().ToString();
+
+                IdentityResult result = userManager.CreateAsync
+                (user, "Password@0").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(user, "Tester").Wait();
                 }
             }
 
@@ -80,10 +100,10 @@ namespace Music_Streaming.Data
                 CreateAsync(role).Result;
             }
 
-            if (!roleManager.RoleExistsAsync("Expert").Result)
+            if (!roleManager.RoleExistsAsync("Tester").Result)
             {
                 IdentityRole role = new IdentityRole();
-                role.Name = "Expert";
+                role.Name = "Tester";
                 IdentityResult roleResult = roleManager.
                 CreateAsync(role).Result;
             }

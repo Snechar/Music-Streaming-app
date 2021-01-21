@@ -20,11 +20,16 @@ namespace Music_Streaming.Context
         public DbSet<Song> Songs { get; set; }
         public DbSet<Album> Albums { get; set; }
         public DbSet<Artist> Artists { get; set; }
+        public DbSet<Playlist> Playlist { get; set; }
+        public DbSet<PlaylistSongs> PlaylistSongs { get; set; }
+        public DbSet<LikedSongs> LikedSongs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
         }
+
+
 
     }
     

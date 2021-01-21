@@ -9,7 +9,7 @@ namespace Music_Streaming.Mappers
 {
     public static class Mapper
     {
-        public static SongViewModel SongToViewModel(Song song) =>
+        public static SongViewModel SongToViewModel(Song song, Artist artist) =>
             new SongViewModel
             {
                 Id = song.Id,
@@ -17,6 +17,8 @@ namespace Music_Streaming.Mappers
                 AlbumName = song.Album.Name,
                 Name = song.Name,
                 Length = song.Length,
+                ArtistName = song.Album.Artist.Name,
+                ArtistId= artist.Id
 
 
 
@@ -33,11 +35,25 @@ namespace Music_Streaming.Mappers
             new AlbumViewModel
             {
                 Id = album.Id,
-                Name=album.Name,         
-                Songs=songs,
-                ArtistId=album.ArtistId,
-                ArtistName=artist.Name
-                
+                Name = album.Name,
+                Songs = songs,
+                ArtistId = album.ArtistId,
+                ArtistName = artist.Name
+
+            };
+
+        public static PlaylistViewModel PlaylistToViewModel(Playlist playlist, List<SongViewModel> songViewModels) =>
+            new PlaylistViewModel
+            {
+                Name = playlist.Name,
+                PlaylistSongs = songViewModels
+
+            };
+        public static PlaylistForAddingViewModel PlaylistForAddingToViewModel(Playlist playlist) =>
+            new PlaylistForAddingViewModel
+            {
+                Id = playlist.Id,
+                Name = playlist.Name,
             };
     }
 }

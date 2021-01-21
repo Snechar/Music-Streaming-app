@@ -15,7 +15,7 @@ namespace Music_Streaming.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.9")
+                .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -162,12 +162,18 @@ namespace Music_Streaming.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DateTimeCreated")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastLoggedIn")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -248,9 +254,56 @@ namespace Music_Streaming.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Artists");
+                });
+
+            modelBuilder.Entity("Music_Streaming.Models.Playlist", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("PlaylistSongsId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("Public")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlaylistSongsId");
+
+                    b.ToTable("Playlist");
+                });
+
+            modelBuilder.Entity("Music_Streaming.Models.PlaylistSongs", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("PlaylistId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("SongId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PlaylistSongs");
                 });
 
             modelBuilder.Entity("Music_Streaming.Models.Song", b =>
@@ -337,6 +390,13 @@ namespace Music_Streaming.Migrations
                         .HasForeignKey("ArtistId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Music_Streaming.Models.Playlist", b =>
+                {
+                    b.HasOne("Music_Streaming.Models.PlaylistSongs", "PlaylistSongs")
+                        .WithMany("Playlists")
+                        .HasForeignKey("PlaylistSongsId");
                 });
 
             modelBuilder.Entity("Music_Streaming.Models.Song", b =>
