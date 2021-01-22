@@ -21,3 +21,10 @@ cd Music-Streaming-Website/music-streaming
 npm install
 npm start
 ```
+### Testing Accounts
+#### User
+>Email: user@gmail.com
+>Password: Password@0
+#### Admin
+>Email: admin@gmail.com
+>Password: Password@1
