@@ -21,8 +21,6 @@ class Navbar extends Component{
 }
 
 componentDidMount() {
-  console.log(localStorage.getItem("loggedIn"))
-  console.log(localStorage.getItem("loggedIn") == 1)
     if (localStorage.getItem("loggedIn") == 1) {
       this.setState({ loggedIn: true })
     }

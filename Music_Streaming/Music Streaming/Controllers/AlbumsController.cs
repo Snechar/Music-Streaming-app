@@ -220,7 +220,23 @@ namespace Music_Streaming.Controllers
                 }
                 else
                 {
-                    return Unauthorized(new Response { Status = "Fail", Message = "Invalid User" });
+                    var artist = await _context.Artists.Where(x => x.UserId == user.Id).FirstAsync();
+                    if (artist == null)
+                    {
+                        return BadRequest(new Response { Status = "Fail", Message = "User is not an artist" });
+                    }
+
+
+
+                    if (album.ArtistId != artist.Id)
+                    {
+                        return Unauthorized(new Response { Status = "Fail", Message = "User does not own album" });
+                    }
+
+                    _context.Albums.Remove(album);
+                    await _context.SaveChangesAsync();
+
+                    return album;
                 }
             }
             else

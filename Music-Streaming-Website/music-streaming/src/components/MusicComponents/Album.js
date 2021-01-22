@@ -14,8 +14,6 @@ const Album = params => {
     const [artistPage, setArtistPage] =useState(false);
     const [artistName,setArtistName] = useState();
     let {handle} = useParams()
-    console.log("look here baka")
-    console.log(handle)
 
 
 

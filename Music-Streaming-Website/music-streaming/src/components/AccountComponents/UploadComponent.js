@@ -45,7 +45,7 @@ class UploadComponent extends Component {
 
         if (err !== '') { // if message not same old that mean has error 
             event.target.value = null // discard selected file
-            console.log(err)
+         
             return false;
         }
         return true;
@@ -53,7 +53,7 @@ class UploadComponent extends Component {
     }
 
     handleChange = event => {
-        console.log(event.target.value)
+       
         this.setState({
             fileName: event.target.value
         })
@@ -91,8 +91,7 @@ class UploadComponent extends Component {
                     )
                 }
             }
-            console.log()
-            console.log(this.state.nameCheck === 0)
+
             if (this.state.nameCheck === 0) {
                 if (this.state.fileTypeNeeded === "profile") {
                     SongService.GetMyArtist().then(reso => {
@@ -109,10 +108,10 @@ class UploadComponent extends Component {
                         }
 
                         ).then(res => { //print response status
-                            console.log(res.statusText)
+               
                             window.location.reload();
                         }).catch((error) => {
-                            console.log(error);
+                            
 
                         })
                     })
@@ -136,11 +135,11 @@ class UploadComponent extends Component {
                             //Send the data to create the song
                             SongService.AddSong(dataToSend).then(res => {
                                 //Add song to database and get data for file upload
-                                console.log(res)
+                                
                                 var data = new FormData()
                                 data.append('file', this.state.selectedFile)
                                 data.append('artistName', res.data.artistName)
-                                console.log(res.data.artistName)
+                                
                                 data.append('albumName', res.data.albumName)
                                 data.append('songid', res.data.id)
                                 data.append('type', "audio")
@@ -153,16 +152,15 @@ class UploadComponent extends Component {
                                 }
 
                                 ).then(res => { //print response status
-                                    console.log(res.statusText)
+
                                     window.location.reload();
 
                                 }).catch((error) => {
-                                    console.log(error);
+                                    
 
                                 })
                             }).catch(errrr => {
-                                console.log("Upload Failed")
-                                console.log(errrr)
+
                             })
                             //Upload the file to the server
                         }
@@ -182,11 +180,11 @@ class UploadComponent extends Component {
                             }
 
                             ).then(res => { //print response status
-                                console.log(res.statusText)
+
                                 window.location.reload();
 
                             }).catch((error) => {
-                                console.log(error);
+
 
                             })
                         }

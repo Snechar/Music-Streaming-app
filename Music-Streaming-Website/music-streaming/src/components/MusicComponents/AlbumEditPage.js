@@ -22,7 +22,7 @@ if (isLoading) {
 
 
 SongService.GetAlbumByUserAndId(params.id).then(()=> {
-    console.log("it loaded")
+
 setLoading(false)})
 .catch(()=>{
 setMessage("You do not own this album")

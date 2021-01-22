@@ -21,7 +21,7 @@ const Album = params => {
     const handleChange = (e) => {
         setArtistName({ ...artistName, name: e.target.value })
     }
-    console.log(isLoading)
+
     if (isLoading) {
         if (firstLoad !== 1) {
             SongService.GetMyArtist().then(res => {
@@ -54,6 +54,7 @@ const Album = params => {
 
             }}>Choose a name an become an artist!</button>
             <button data-testid="profile-log-out-button" className="center-box" onClick={() => {
+
                 localStorage.clear()
                 history.push("/login")
             }}><a>Log out</a></button>
@@ -69,7 +70,7 @@ const Album = params => {
             <div className="card">
                 <Card data-testid="card-profile" className="card" style={{ width: '18rem' }}>
 
-                    <Card.Img variant="top" src={"Pfp/" + artistRef.current.name + ".jpg"} onError={(e) => { console.log(); e.target.onError = null; e.target.src = "noImg.jpg" }} />
+                    <Card.Img variant="top" src={"Pfp/" + artistRef.current.name + ".jpg"} onError={(e) => { e.target.onError = null; e.target.src = "noImg.jpg" }} />
                 </Card>
 
 
@@ -79,10 +80,10 @@ const Album = params => {
                     : <div></div>
                 }
             </div>
-            <button className="center-box"><a onClick={() => {
+            <button  onClick={() => {
                 localStorage.clear()
                 history.push("/login")
-            }}>Log out</a></button>
+            }} className="center-box"><a>Log out</a></button>
             <Link to={"/editselect"}>
                 <button className="center-box">Music Management</button>
             </Link>
